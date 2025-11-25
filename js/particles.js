@@ -106,14 +106,45 @@ function initParticleSystem() {
         x: 0,
         y: 0,
         targetX: 0,
-        targetY: 0
+        targetY: 0,
+        isDragging: false,
+        prevX: 0,
+        prevY: 0,
+        dragVelocityX: 0,
+        dragVelocityY: 0
     };
 
     // Track mouse movement
     window.addEventListener('mousemove', (event) => {
-        mouse.targetX = (event.clientX / window.innerWidth) * 2 - 1;
-        mouse.targetY = -(event.clientY / window.innerHeight) * 2 + 1;
+        const newTargetX = (event.clientX / window.innerWidth) * 2 - 1;
+        const newTargetY = -(event.clientY / window.innerHeight) * 2 + 1;
+
+        // If dragging, calculate velocity
+        if (mouse.isDragging) {
+            mouse.dragVelocityX = (newTargetX - mouse.targetX) * 2;
+            mouse.dragVelocityY = (newTargetY - mouse.targetY) * 2;
+        }
+
+        mouse.targetX = newTargetX;
+        mouse.targetY = newTargetY;
     });
+
+    // Mouse down event - start dragging
+    canvas.addEventListener('mousedown', (event) => {
+        mouse.isDragging = true;
+        mouse.prevX = event.clientX;
+        mouse.prevY = event.clientY;
+        canvas.style.cursor = 'grabbing';
+    });
+
+    // Mouse up event - stop dragging
+    window.addEventListener('mouseup', () => {
+        mouse.isDragging = false;
+        canvas.style.cursor = 'grab';
+    });
+
+    // Set initial cursor
+    canvas.style.cursor = 'grab';
 
     // Handle window resize
     window.addEventListener('resize', () => {
@@ -186,13 +217,31 @@ function initParticleSystem() {
         // Mark geometry as needing update
         particleSystemMesh.geometry.attributes.position.needsUpdate = true;
 
-        // Slowly rotate the entire system
-        particleSystemMesh.rotation.y += 0.0002;
-        particleSystemMesh.rotation.x = Math.sin(time * 0.1) * 0.05;
+        // Control rotation with drag
+        if (mouse.isDragging) {
+            // Apply drag velocity directly to rotation
+            particleSystemMesh.rotation.y += mouse.dragVelocityX * 0.5;
+            particleSystemMesh.rotation.x += mouse.dragVelocityY * 0.5;
+        } else {
+            // Apply momentum - continue spinning with drag
+            particleSystemMesh.rotation.y += mouse.dragVelocityX * 0.5;
+            particleSystemMesh.rotation.x += mouse.dragVelocityY * 0.5;
 
-        // Add camera sway based on mouse
-        camera.position.x = mouse.x * 20;
-        camera.position.y = mouse.y * 20;
+            // Gradually reduce velocity (friction/damping)
+            mouse.dragVelocityX *= 0.95;
+            mouse.dragVelocityY *= 0.95;
+
+            // Add subtle automatic rotation when not dragging and velocity is low
+            if (Math.abs(mouse.dragVelocityX) < 0.001 && Math.abs(mouse.dragVelocityY) < 0.001) {
+                particleSystemMesh.rotation.y += 0.0002;
+                particleSystemMesh.rotation.x = Math.sin(time * 0.1) * 0.05;
+            }
+        }
+
+        // Add camera sway based on mouse (reduced when dragging)
+        const cameraInfluence = mouse.isDragging ? 0.3 : 1;
+        camera.position.x = mouse.x * 20 * cameraInfluence;
+        camera.position.y = mouse.y * 20 * cameraInfluence;
         camera.lookAt(scene.position);
 
         renderer.render(scene, camera);

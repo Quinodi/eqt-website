@@ -25,12 +25,12 @@
     --spacing-sm: 16px;
     --spacing-md: 24px;
     --spacing-lg: 48px;
-    --spacing-xl: 64px;
+    --spacing-xl: 48px;
     --spacing-2xl: 96px;
 
     /* Layout */
     --container-width: 1440px;
-    --nav-height: 70px;
+    --nav-height: 90px;
 
     /* Transitions */
     --transition-fast: 0.2s ease;
@@ -150,6 +150,11 @@ ul {
     font-size: var(--font-size-xl);
     font-weight: 700;
     color: var(--color-accent);
+}
+
+.nav-logo img {
+    height: 45px;
+    width: auto;
 }
 
 .nav-menu {
@@ -283,12 +288,6 @@ ul {
     background-color: #ffffff;
     border-radius: 8px;
     overflow: hidden;
-    transition: transform var(--transition-normal), box-shadow var(--transition-normal);
-}
-
-.feature-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
 }
 
 .feature-image {
@@ -306,7 +305,7 @@ ul {
 .feature-card h3 {
     font-size: 1.1em;
     font-weight: 600;
-    margin: 10px 0;
+    margin: 16px 0 10px 0;
 }
 
 .feature-card p {
