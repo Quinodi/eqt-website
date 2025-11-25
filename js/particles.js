@@ -87,14 +87,41 @@ function initParticleSystem() {
     particles.setAttribute('color', new THREE.BufferAttribute(colors, 3));
     particles.setAttribute('size', new THREE.BufferAttribute(sizes, 1));
 
-    // Particle material
+    // Create circular texture for particles
+    const createCircleTexture = () => {
+        const size = 128;
+        const canvas = document.createElement('canvas');
+        canvas.width = size;
+        canvas.height = size;
+        const ctx = canvas.getContext('2d');
+
+        const center = size / 2;
+        const radius = size / 2;
+
+        // Create radial gradient
+        const gradient = ctx.createRadialGradient(center, center, 0, center, center, radius);
+        gradient.addColorStop(0, 'white');
+        gradient.addColorStop(0.5, 'white');
+        gradient.addColorStop(1, 'transparent');
+
+        ctx.fillStyle = gradient;
+        ctx.fillRect(0, 0, size, size);
+
+        return new THREE.CanvasTexture(canvas);
+    };
+
+    const texture = createCircleTexture();
+
+    // Particle material with circular texture
     const particleMaterial = new THREE.PointsMaterial({
         size: 2,
+        map: texture,
         vertexColors: true,
         transparent: true,
         opacity: 0.8,
         sizeAttenuation: true,
-        blending: THREE.AdditiveBlending
+        blending: THREE.AdditiveBlending,
+        depthWrite: false
     });
 
     // Create particle system

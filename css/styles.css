@@ -4,7 +4,7 @@
 :root {
     /* Colors - Professional Blue Palette */
     --color-bg-primary: #ffffff;
-    --color-bg-secondary: #f8f9fa;
+    --color-bg-secondary: #eeeeee;
     --color-text-primary: #212529;
     --color-text-secondary: #6c757d;
     --color-accent: #0066cc;
@@ -25,7 +25,7 @@
     --spacing-sm: 16px;
     --spacing-md: 24px;
     --spacing-lg: 48px;
-    --spacing-xl: 48px;
+    --spacing-xl: 80px;
     --spacing-2xl: 96px;
 
     /* Layout */
@@ -102,14 +102,24 @@ ul {
     font-weight: 700;
     margin-bottom: var(--spacing-md);
     text-align: center;
+    color: #555555;
+}
+
+.section-title-rev {
+    font-size: var(--font-size-2xl);
+    font-weight: 700;
+    margin-bottom: var(--spacing-md);
+    text-align: left;
+    color: #555555;
 }
 
 .section-intro {
     font-size: 1.8em;
     color: var(--color-text-secondary);
     text-align: center;
-    max-width: 100%;
+    max-width: 1100px;
     margin: 0 auto var(--spacing-lg);
+    line-height: 1.5em;
 }
 
 .content-text {
@@ -117,10 +127,22 @@ ul {
     margin: 0 auto;
     font-size: var(--font-size-lg);
     line-height: 1.8;
+    color: #ffffff;
+}
+.content-text-rev {
+    max-width: 800px;
+    margin: 0 auto;
+    font-size: var(--font-size-lg);
+    line-height: 1.8;
+    color: #555555;
 }
 
 .content-text p {
     margin-bottom: var(--spacing-md);
+}
+
+.content-text-rev p {
+    margin-bottom: var(--spacing-sm);
 }
 
 /* ============================================
@@ -220,7 +242,7 @@ ul {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.7);
+    background-color: rgba(0, 0, 0, 0.5);
     z-index: 2;
     pointer-events: none;
 }
@@ -286,13 +308,13 @@ ul {
 
 .feature-card {
     background-color: #ffffff;
-    border-radius: 8px;
+    border-radius: 0px;
     overflow: hidden;
 }
 
 .feature-image {
     width: 100%;
-    aspect-ratio: 4 / 3;
+    aspect-ratio: 16 / 9;
     overflow: hidden;
 }
 
@@ -317,36 +339,65 @@ ul {
    Who We Are Section
    ============================================ */
 .who-we-are {
-    background-color: var(--color-bg-secondary);
+    padding: 0;
+}
+
+.who-we-are-split {
+    display: flex;
+    min-height: 600px;
+}
+
+.who-we-are-image {
+    flex: 1;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.who-we-are-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.who-we-are-text {
+    flex: 1;
+    background-color: #f6f6f6;
+    display: flex;
+    align-items: center;
+    justify-content: left;
+}
+
+.who-we-are-text-content {
+    padding: var(--spacing-lg);
+    max-width: 700px;
 }
 
 /* ============================================
    Why Us Section
    ============================================ */
 .why-us {
-    position: relative;
-    background-image: url('https://placehold.co/1920x600/0066cc/ffffff?text=Why+Equitas');
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
-    padding: 0;
+    background-color: #ffffff;
 }
 
 .why-us-overlay {
-    background-color: rgba(0, 102, 204, 0.85);
-    padding: var(--spacing-xl) 0;
+    padding: var(--spacing-sm) 0;
 }
 
-.why-us .section-title,
-.why-us .content-text {
-    color: var(--color-bg-primary);
+.why-card {
+    padding: var(--spacing-md);
+}
+
+.why-card h3 {
+    margin-top: 0;
 }
 
 /* ============================================
    Contact Section
    ============================================ */
 .contact {
-    background-color: var(--color-bg-primary);
+    background-color: #f6f6f6;
 }
 
 .contact-form {
@@ -550,6 +601,15 @@ ul {
     /* Section spacing */
     .section {
         padding: var(--spacing-lg) 0;
+    }
+
+    /* Who We Are - Stack vertically on mobile */
+    .who-we-are-split {
+        flex-direction: column;
+    }
+
+    .who-we-are-image {
+        min-height: 300px;
     }
 
     /* Disable parallax on mobile */
